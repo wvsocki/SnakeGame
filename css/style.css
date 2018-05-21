@@ -18,7 +18,7 @@ section#score {
 }
 
 #board  > div {    
-  border: 1px solid black;
+  border: 1px solid blue;
   float: left;
   width: 64px;
   height: 64px;
@@ -50,8 +50,7 @@ section#score div {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
-section#over {
+.popup {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -59,18 +58,20 @@ section#over {
   top: 0;
   z-index: 1;
   padding: 10px;
-  background-color: rgba(255, 255, 0, 0.75);
-}
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
 
-section#over pre {
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  font-size: 10px;
-  font-weight: bolder;
-  color: brown;
+}
+section#over {
+
+}
+section#start {
 }
 
 .invisible {
   display: none;
 }
+
