@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var Game = function () {
         var self = this;
+        var interval = null;
         this.board = document.querySelectorAll("#board div");
         this.furry = new Furry();
         this.coin = new Coin();
@@ -28,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
         };
         this.startGame = function () {
-            setInterval(function () {
+            interval = setInterval(function () {
                 self.moveFurry();
             }, 250)
         };
@@ -47,8 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
             self.gameOver();
             self.showFurry();
             self.checkCoinCollision();
-
-            console.log(this.furry.y);
 
         };
         this.hideVisibleFurry = function () {
@@ -92,9 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         this.gameOver = function () {
             if (this.furry.x < 0 || this.furry.x > 9 || this.furry.y < 0 || this.furry.y > 9) {
-                delete self.startGame.setInterval;
-                clearInterval(self.startGame);
-                this.hideVisibleFurry;
+                clearInterval(interval);
+                self.hideVisibleFurry()
                 document.querySelector('#over').classList.remove('invisible');
                 document.querySelector('#over').textContent = game.score;
             } else return;
@@ -106,15 +104,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     var game = new Game();
-    game.showFurry();
-    game.showCoin();
+
     // game.startGame();
     document.querySelector('#start').addEventListener('click', function () {
         document.querySelector('#start').classList.add('invisible');
         game.startGame();
+        game.showFurry();
+        game.showCoin();
     });
     document.querySelector('#over').addEventListener('click', function () {
         document.querySelector('#over').classList.add('invisible');
+        game.hideVisibleFurry()
+        game.showFurry();
+        game.showCoin();
         game.startGame();
+
     });
 });
