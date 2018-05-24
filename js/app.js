@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 250)
         };
         this.moveFurry = function () {
-            self.gameOver();
+            this.gameOver();
             if (this.furry.direction === "right") {
                 this.furry.x = this.furry.x + 1;
             } else if (this.furry.direction === "left") {
@@ -45,9 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.furry.y = this.furry.y + 1;
             }
             ;
-            self.gameOver();
-            self.showFurry();
-            self.checkCoinCollision();
+            this.gameOver();
+            this.showFurry();
+            this.checkCoinCollision();
 
         };
         this.hideVisibleFurry = function () {
@@ -86,15 +86,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.score++;
                 document.querySelector('#score > div > strong').innerText = this.score;
                 this.coin = new Coin();
-                game.showCoin();
+                this.showCoin();
             } else return;
         };
         this.gameOver = function () {
             if (this.furry.x < 0 || this.furry.x > 9 || this.furry.y < 0 || this.furry.y > 9) {
                 clearInterval(interval);
-                self.hideVisibleFurry()
+                this.hideVisibleFurry();
+                document.querySelector('.coin').classList.remove('coin');
+
+
+
                 document.querySelector('#over').classList.remove('invisible');
-                document.querySelector('#over').textContent = game.score;
+                document.querySelector('#over-score').textContent = self.score;
+                document.querySelector('#score > div > strong').innerText = 0;
             } else return;
 
         }
@@ -103,17 +108,21 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
 
-    var game = new Game();
+    // var game = new Game();
 
-    // game.startGame();
+
     document.querySelector('#start').addEventListener('click', function () {
         document.querySelector('#start').classList.add('invisible');
+        var game = new Game();
         game.startGame();
         game.showFurry();
         game.showCoin();
     });
     document.querySelector('#over').addEventListener('click', function () {
         document.querySelector('#over').classList.add('invisible');
+        var game = new Game();
+        var game = new Game();
+        var game = new Game();
         game.hideVisibleFurry()
         game.showFurry();
         game.showCoin();
