@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         this.showSnake = function () {
             self.hideVisibleSnake();
-            this.board[this.index(this.snake.x, this.snake.y)].classList.add('furry');
+            this.board[this.index(this.snake.x, this.snake.y)].classList.add('snake');
         };
         this.showCoin = function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         this.startGame = function () {
             interval = setInterval(function () {
                 self.moveSnake();
-            }, 250)
+            }, 1000)
         };
         this.moveSnake = function () {
             this.gameOver();
@@ -50,11 +50,24 @@ document.addEventListener("DOMContentLoaded", function () {
             this.checkCoinCollision();
 
         };
+        // this.hideVisibleSnake = function () {
+        //     if (document.querySelector('.snake') === null) {
+        //         return
+        //     } else {
+        //         // document.querySelector('.snake').classList.remove('snake');
+        //     }
+        //
+        // };
         this.hideVisibleSnake = function () {
-            if (document.querySelector('.furry') === null) {
+            if (document.querySelector('.snake') === null) {
+                console.log('null');
                 return
-            } else {
-                document.querySelector('.furry').classList.remove('furry');
+            } else if (document.querySelectorAll('.snake')[this.score] === undefined) {
+                console.log("undef");
+                return
+            } else{
+                document.querySelectorAll('.snake')[this.score].classList.remove('snake');
+                console.log("usun");
             }
 
         };
@@ -100,20 +113,20 @@ document.addEventListener("DOMContentLoaded", function () {
             } else return;
         }
     };
-    document.querySelector('#start').addEventListener('click', function () {
-        document.querySelector('#start').classList.add('invisible');
+    function StartNewGame() {
         var game = new Game();
-        game.startGame();
         game.showSnake();
         game.showCoin();
+        game.startGame();
+
+    }
+    document.querySelector('#start').addEventListener('click', function () {
+        document.querySelector('#start').classList.add('invisible');
+        StartNewGame();
     });
     document.querySelector('#over').addEventListener('click', function () {
         document.querySelector('#over').classList.add('invisible');
-        var game = new Game();
-        game.hideVisibleSnake()
-        game.showSnake();
-        game.showCoin();
-        game.startGame();
+        StartNewGame();
 
     });
 });
