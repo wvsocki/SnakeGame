@@ -28,17 +28,21 @@ document.addEventListener("DOMContentLoaded", function () {
             if(self.counter == 0){
                 return
             } else {
-                console.log(array[this.score]);
-                // console.log(array[this.score].classList);
-                array[this.score].classList.remove('snake');
-                array.splice(this.score, 1);
+                if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('coin')) {
+                    return
+                }
+                array[0].classList.remove('snake');
+                array.splice(0, 1);
             }
 
         };
 
         this.showSnake = function () {
-            this.board[this.index(this.snake.x, this.snake.y)].classList.add('snake');
+            this.checkTailColision();
             array.push(this.board[this.index(this.snake.x, this.snake.y)]);
+            for (var i = 0; i< array.length; i++){
+                array[i].classList.add('snake')
+            }
             console.log(array);
             self.hideVisibleSnake();
             console.log(array);
@@ -50,10 +54,10 @@ document.addEventListener("DOMContentLoaded", function () {
             interval = setInterval(function () {
                 self.counter++;
                 self.moveSnake();
-            }, 1000)
+            }, 250)
         };
         this.moveSnake = function () {
-            this.gameOver();
+            this.checkWallColision();
             if (this.snake.direction === "right") {
                 this.snake.x = this.snake.x + 1;
             } else if (this.snake.direction === "left") {
@@ -64,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.snake.y = this.snake.y + 1;
             }
             ;
-            this.gameOver();
+            this.checkWallColision();
             this.showSnake();
             this.checkCoinCollision();
 
@@ -93,27 +97,41 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
         };
+        this.createNewCoin = function () {
+            this.coin = new Coin();
+            this.showCoin();
+
+        };
         this.checkCoinCollision = function () {
             if (this.snake.x === this.coin.x && this.snake.y === this.coin.y) {
                 document.querySelector('.coin').classList.remove('coin');
                 this.score++;
+                this.score++;
                 document.querySelector('#score > div > strong').innerText = this.score;
-                this.coin = new Coin();
-                this.showCoin();
+                this.createNewCoin()
             } else return;
         };
 
 
-        this.gameOver = function () {
+        this.checkWallColision = function () {
             if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
-                clearInterval(interval);
-                // this.clearSnake();
-                // document.querySelectorAll('.snake').classList.remove('snake');
-                document.querySelector('.coin').classList.remove('coin');
-                document.querySelector('#over').classList.remove('invisible');
-                document.querySelector('#over-score').textContent = self.score;
-                document.querySelector('#score > div > strong').innerText = 0;
+                this.gameOver()
             } else return;
+        };
+        this.checkTailColision = function () {
+            if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('snake')){
+                this.gameOver()
+            } else return
+        }
+        this.gameOver = function () {
+            for (var i = 0; i< array.length; i++){
+                array[i].classList.remove('snake')};
+            clearInterval(interval);
+            // document.querySelectorAll('.snake').classList.remove('snake');
+            document.querySelector('.coin').classList.remove('coin');
+            document.querySelector('#over').classList.remove('invisible');
+            document.querySelector('#over-score').textContent = self.score;
+            document.querySelector('#score > div > strong').innerText = 0;
         }
     };
     function StartNewGame() {
@@ -133,3 +151,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 });
+
