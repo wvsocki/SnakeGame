@@ -54,7 +54,12 @@ section#score div {
   background-image: url('../images/coin.png');
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 }
+
+
+
+
 .popup {
   position: fixed;
   width: 100%;

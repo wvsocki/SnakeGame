@@ -12,24 +12,43 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     var Game = function () {
+        var array = [];
         var self = this;
         var interval = null;
         this.board = document.querySelectorAll("#board div");
         this.snake = new Snake();
         this.coin = new Coin();
         this.score = 0;
+        this.counter = 0;
         this.index = function (x, y) {
             return x + (y * 10);
         };
+
+        this.hideVisibleSnake = function () {
+            if(self.counter == 0){
+                return
+            } else {
+                console.log(array[this.score]);
+                // console.log(array[this.score].classList);
+                array[this.score].classList.remove('snake');
+                array.splice(this.score, 1);
+            }
+
+        };
+
         this.showSnake = function () {
-            self.hideVisibleSnake();
             this.board[this.index(this.snake.x, this.snake.y)].classList.add('snake');
+            array.push(this.board[this.index(this.snake.x, this.snake.y)]);
+            console.log(array);
+            self.hideVisibleSnake();
+            console.log(array);
         };
         this.showCoin = function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
         };
         this.startGame = function () {
             interval = setInterval(function () {
+                self.counter++;
                 self.moveSnake();
             }, 1000)
         };
@@ -50,27 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
             this.checkCoinCollision();
 
         };
-        // this.hideVisibleSnake = function () {
-        //     if (document.querySelector('.snake') === null) {
-        //         return
-        //     } else {
-        //         // document.querySelector('.snake').classList.remove('snake');
-        //     }
-        //
-        // };
-        this.hideVisibleSnake = function () {
-            if (document.querySelector('.snake') === null) {
-                console.log('null');
-                return
-            } else if (document.querySelectorAll('.snake')[this.score] === undefined) {
-                console.log("undef");
-                return
-            } else{
-                document.querySelectorAll('.snake')[this.score].classList.remove('snake');
-                console.log("usun");
-            }
 
-        };
+
         document.addEventListener('keydown', function (event) {
             self.turnSnake(event);
         });
@@ -102,10 +102,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.showCoin();
             } else return;
         };
+
+
         this.gameOver = function () {
             if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
                 clearInterval(interval);
-                this.hideVisibleSnake();
+                // this.clearSnake();
+                // document.querySelectorAll('.snake').classList.remove('snake');
                 document.querySelector('.coin').classList.remove('coin');
                 document.querySelector('#over').classList.remove('invisible');
                 document.querySelector('#over-score').textContent = self.score;
