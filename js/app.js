@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i< array.length; i++){
                 array[i].classList.add('snake')
             }
-            console.log(array);
+            // console.log(array);
             self.hideVisibleSnake();
-            console.log(array);
+            // console.log(array);
         };
         this.showCoin = function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
@@ -99,13 +99,18 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         this.createNewCoin = function () {
             this.coin = new Coin();
-            this.showCoin();
+            if (this.board[this.index(this.coin.x, this.coin.y)].classList.contains('snake')){
+                this.createNewCoin()
+            } else {
+                this.showCoin();
+            }
+
+
 
         };
         this.checkCoinCollision = function () {
             if (this.snake.x === this.coin.x && this.snake.y === this.coin.y) {
                 document.querySelector('.coin').classList.remove('coin');
-                this.score++;
                 this.score++;
                 document.querySelector('#score > div > strong').innerText = this.score;
                 this.createNewCoin()
@@ -124,9 +129,10 @@ document.addEventListener("DOMContentLoaded", function () {
             } else return
         }
         this.gameOver = function () {
-            for (var i = 0; i< array.length; i++){
-                array[i].classList.remove('snake')};
+            // for (var i = 0; i< array.length; i++){
+            //     array[i].classList.remove('snake')};
             clearInterval(interval);
+            console.log(document.querySelectorAll('.snake'));
             // document.querySelectorAll('.snake').classList.remove('snake');
             document.querySelector('.coin').classList.remove('coin');
             document.querySelector('#over').classList.remove('invisible');
