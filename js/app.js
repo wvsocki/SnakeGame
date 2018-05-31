@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var Game = function () {
         var snakeBody = [];
         var self = this;
-        var interval = null;
+        var interval;
+        var lastMoveDirection;
         this.board = document.querySelectorAll("#board div");
         this.snake = new Snake();
         this.coin = new Coin();
@@ -58,12 +59,16 @@ document.addEventListener("DOMContentLoaded", function () {
         this.moveSnake = function () {
             if (this.snake.direction === "right") {
                 this.snake.x = this.snake.x + 1;
+                self.lastMoveDirection = 'right'
             } else if (this.snake.direction === "left") {
                 this.snake.x = this.snake.x - 1;
+                self.lastMoveDirection = 'left'
             } else if (this.snake.direction === "top") {
                 this.snake.y = this.snake.y - 1;
+                self.lastMoveDirection = 'top'
             } else if (this.snake.direction === "bottom") {
                 this.snake.y = this.snake.y + 1;
+                self.lastMoveDirection = 'bottom'
             };
             // this.checkWallColision();
             // this.checkTailColision();
@@ -94,22 +99,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
             switch (event.which) {
                 case 37:
-                    if (this.snake.direction !== 'right'){
+                    if (this.lastMoveDirection !== 'right'){
                         this.snake.direction = 'left';
                     } else return;
                     break;
                 case 39:
-                    if (this.snake.direction !== 'left'){
+                    if (this.lastMoveDirection !== 'left'){
                         this.snake.direction = 'right';
                     } else return;
                     break;
                 case 38:
-                    if (this.snake.direction !== 'bottom'){
+                    if (this.lastMoveDirection !== 'bottom'){
                         this.snake.direction = 'top';
                     } else return;
                     break;
                 case 40:
-                    if (this.snake.direction !== 'top'){
+                    if (this.lastMoveDirection !== 'top'){
                         this.snake.direction = 'bottom';
                     } else return;
                     break;
