@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     var Game = function () {
-        var array = [];
+        var snakeBody = [];
         var self = this;
         var interval = null;
         this.board = document.querySelectorAll("#board div");
@@ -31,17 +31,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('coin')) {
                     return
                 }
-                array[0].classList.remove('snake');
-                array.splice(0, 1);
+                snakeBody[0].classList.remove('snake');
+                snakeBody.splice(0, 1);
             }
 
         };
 
         this.showSnake = function () {
-            this.checkTailColision();
-            array.push(this.board[this.index(this.snake.x, this.snake.y)]);
-            for (var i = 0; i< array.length; i++){
-                array[i].classList.add('snake')
+            snakeBody.push(this.board[this.index(this.snake.x, this.snake.y)]);
+            for (var i = 0; i< snakeBody.length; i++){
+                snakeBody[i].classList.add('snake')
             }
             // console.log(array);
             self.hideVisibleSnake();
@@ -54,10 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
             interval = setInterval(function () {
                 self.counter++;
                 self.moveSnake();
-            }, 250)
+            }, 300)
         };
         this.moveSnake = function () {
-            this.checkWallColision();
             if (this.snake.direction === "right") {
                 this.snake.x = this.snake.x + 1;
             } else if (this.snake.direction === "left") {
@@ -66,11 +64,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.snake.y = this.snake.y - 1;
             } else if (this.snake.direction === "bottom") {
                 this.snake.y = this.snake.y + 1;
+            };
+            // this.checkWallColision();
+            // this.checkTailColision();
+            if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
+                this.gameOver();
+                return
+
             }
-            ;
-            this.checkWallColision();
+
+            if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('snake')){
+                this.gameOver();
+                return
+            }
+
             this.showSnake();
             this.checkCoinCollision();
+
+            // this.checkWallColision();
 
         };
 
@@ -83,16 +94,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
             switch (event.which) {
                 case 37:
-                    this.snake.direction = 'left';
+                    if (this.snake.direction !== 'right'){
+                        this.snake.direction = 'left';
+                    } else return;
                     break;
                 case 39:
-                    this.snake.direction = 'right';
+                    if (this.snake.direction !== 'left'){
+                        this.snake.direction = 'right';
+                    } else return;
                     break;
                 case 38:
-                    this.snake.direction = 'top';
+                    if (this.snake.direction !== 'bottom'){
+                        this.snake.direction = 'top';
+                    } else return;
                     break;
                 case 40:
-                    this.snake.direction = 'bottom';
+                    if (this.snake.direction !== 'top'){
+                        this.snake.direction = 'bottom';
+                    } else return;
                     break;
             }
 
@@ -118,22 +137,24 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
 
-        this.checkWallColision = function () {
-            if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
-                this.gameOver()
-            } else return;
-        };
-        this.checkTailColision = function () {
-            if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('snake')){
-                this.gameOver()
-            } else return
-        }
+        // this.checkWallColision = function () {
+        //     if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
+        //         this.gameOver()
+        //     } else return;
+        // };
+        // this.checkTailColision = function () {
+        //     if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('snake')){
+        //         this.gameOver()
+        //     } else return
+        // }
         this.gameOver = function () {
-            // for (var i = 0; i< array.length; i++){
-            //     array[i].classList.remove('snake')};
             clearInterval(interval);
-            console.log(document.querySelectorAll('.snake'));
-            // document.querySelectorAll('.snake').classList.remove('snake');
+            // console.log(document.querySelectorAll('.snake'));
+            var snakesToDelete = document.querySelectorAll('.snake');
+            for (var i = 0; i<snakesToDelete.length; i++){
+                snakesToDelete[i].classList.remove('snake')};
+            // console.log("po");
+            // console.log(document.querySelectorAll('.snake'));
             document.querySelector('.coin').classList.remove('coin');
             document.querySelector('#over').classList.remove('invisible');
             document.querySelector('#over-score').textContent = self.score;
