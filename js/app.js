@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var self = this;
         var interval;
         var lastMoveDirection;
+        var speed = 300;
         this.board = document.querySelectorAll("#board div");
         this.snake = new Snake();
         this.coin = new Coin();
@@ -51,10 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
         };
         this.startGame = function () {
+
             interval = setInterval(function () {
                 self.counter++;
                 self.moveSnake();
-            }, 300)
+            }, this.speed)
         };
         this.moveSnake = function () {
             if (this.snake.direction === "right") {
@@ -85,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             this.showSnake();
             this.checkCoinCollision();
+            this.currentLevel(self.score)
 
             // this.checkWallColision();
 
@@ -99,22 +102,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
             switch (event.which) {
                 case 37:
-                    if (this.lastMoveDirection !== 'right'){
+                    if (this.lastMoveDirection !== 'right' && this.snake.direction !== 'left'){
                         this.snake.direction = 'left';
                     } else return;
                     break;
                 case 39:
-                    if (this.lastMoveDirection !== 'left'){
+                    if (this.lastMoveDirection !== 'left' && this.snake.direction !== 'right'){
                         this.snake.direction = 'right';
                     } else return;
                     break;
                 case 38:
-                    if (this.lastMoveDirection !== 'bottom'){
+                    if (this.lastMoveDirection !== 'bottom' && this.snake.direction !== 'top'){
                         this.snake.direction = 'top';
                     } else return;
                     break;
                 case 40:
-                    if (this.lastMoveDirection !== 'top'){
+                    if (this.lastMoveDirection !== 'top' && this.snake.direction !== 'bottom'){
                         this.snake.direction = 'bottom';
                     } else return;
                     break;
@@ -136,10 +139,33 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this.snake.x === this.coin.x && this.snake.y === this.coin.y) {
                 document.querySelector('.coin').classList.remove('coin');
                 this.score++;
-                document.querySelector('#score > div > strong').innerText = this.score;
+                document.querySelector('#score').innerText = this.score;
                 this.createNewCoin()
             } else return;
         };
+        this.currentLevel = function (score) {
+            switch (score) {
+                case 10:
+
+                    break;
+                case 20:
+
+                    break;
+                case 40:
+
+                    break;
+                case 50:
+
+                    break;
+                case 60:
+
+                    break;
+                case 70:
+
+                    break;
+
+            }
+        }
 
 
         // this.checkWallColision = function () {
@@ -163,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector('.coin').classList.remove('coin');
             document.querySelector('#over').classList.remove('invisible');
             document.querySelector('#over-score').textContent = self.score;
-            document.querySelector('#score > div > strong').innerText = 0;
+            document.querySelector('#score').innerText = 0;
         }
     };
     function StartNewGame() {
