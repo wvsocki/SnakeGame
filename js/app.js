@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var snakeBody = [];
         var self = this;
         var interval;
-        var lastMoveDirection;
-        var speed = 300;
+        // var lastMoveDirection;
+        this.speed = 500;
         this.board = document.querySelectorAll("#board div");
         this.snake = new Snake();
         this.coin = new Coin();
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
         };
         this.startGame = function () {
-
             interval = setInterval(function () {
                 self.counter++;
                 self.moveSnake();
@@ -145,13 +144,24 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         this.currentLevel = function (score) {
             switch (score) {
-                case 10:
+                case 2:
+                    this.speed = 300;
+                    clearInterval(interval);
+                    this.startGame();
+                    document.querySelector('#level').innerText = "YEAH, STILL SLOW";
 
                     break;
-                case 20:
+                case 5:
+                    this.speed = 200;
+                    clearInterval(interval);
+                    this.startGame();
+                    document.querySelector('#level').innerText = "STILL EASY, RIGHT?";
 
                     break;
-                case 40:
+                case 8:
+                    this.speed = 100;
+                    clearInterval(interval);
+                    this.startGame();
 
                     break;
                 case 50:
