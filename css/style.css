@@ -9,9 +9,16 @@ body {
   font-family: 'VT323', monospace;
     font-size: 50px;
 }
+#info {
+  width: 640px;
+    text-align: center;
+    margin: 1em auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+#score {
 
-section#info {
-  width: 100%;
 }
 
 #board {
@@ -30,14 +37,6 @@ section#info {
   width: 10%;
   height: 10%;
 }
-
-
-section#info div {
-  width: 10em;
-  text-align: center;
-  margin: 1em auto;
-}
-
 
 
 

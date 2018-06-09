@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var snakeBody = [];
         var self = this;
         var interval;
-        // var lastMoveDirection;
-        this.speed = 500;
+        var lastMoveDirection;
+        this.speed = 350;
         this.board = document.querySelectorAll("#board div");
         this.snake = new Snake();
         this.coin = new Coin();
@@ -44,9 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for (var i = 0; i< snakeBody.length; i++){
                 snakeBody[i].classList.add('snake')
             }
-            // console.log(array);
             self.hideVisibleSnake();
-            // console.log(array);
         };
         this.showCoin = function () {
             this.board[this.index(this.coin.x, this.coin.y)].classList.add('coin');
@@ -71,8 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.snake.y = this.snake.y + 1;
                 self.lastMoveDirection = 'bottom'
             };
-            // this.checkWallColision();
-            // this.checkTailColision();
             if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
                 this.gameOver();
                 return
@@ -88,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
             this.checkCoinCollision();
             this.currentLevel(self.score)
 
-            // this.checkWallColision();
 
         };
 
@@ -142,52 +137,37 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.createNewCoin()
             } else return;
         };
+        this.changeSpeed = function(speed, text){
+            this.speed = speed;
+            clearInterval(interval);
+            this.startGame();
+            document.querySelector('#level').innerText = text;
+
+
+        }
         this.currentLevel = function (score) {
             switch (score) {
-                case 2:
-                    this.speed = 300;
-                    clearInterval(interval);
-                    this.startGame();
-                    document.querySelector('#level').innerText = "YEAH, STILL SLOW";
-
-                    break;
                 case 5:
-                    this.speed = 200;
-                    clearInterval(interval);
-                    this.startGame();
-                    document.querySelector('#level').innerText = "STILL EASY, RIGHT?";
-
+                    this.changeSpeed(300, "YEAH, STILL SLOW");
                     break;
-                case 8:
-                    this.speed = 100;
-                    clearInterval(interval);
-                    this.startGame();
-
+                case 10:
+                    this.changeSpeed(250, "STILL EASY, RIGHT?");
                     break;
-                case 50:
-
+                case 15:
+                    this.changeSpeed(220, "SLOWLY SPEEDING UP");
                     break;
-                case 60:
-
+                case 20:
+                    this.changeSpeed(190, "GONNA BE HARDER");
                     break;
-                case 70:
-
+                case 25:
+                    this.changeSpeed(160, "NOONE SAID IT WILL BE EASY");
+                    break;
+                case 30:
+                    this.changeSpeed(130, "STILL ALIVE?");
                     break;
 
             }
-        }
-
-
-        // this.checkWallColision = function () {
-        //     if (this.snake.x < 0 || this.snake.x > 9 || this.snake.y < 0 || this.snake.y > 9) {
-        //         this.gameOver()
-        //     } else return;
-        // };
-        // this.checkTailColision = function () {
-        //     if (this.board[this.index(this.snake.x, this.snake.y)].classList.contains('snake')){
-        //         this.gameOver()
-        //     } else return
-        // }
+        };
         this.gameOver = function () {
             clearInterval(interval);
             // console.log(document.querySelectorAll('.snake'));
