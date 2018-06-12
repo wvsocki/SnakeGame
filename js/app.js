@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var snakeBody = [];
         var self = this;
         var interval;
-        var lastMoveDirection;
+        this.lastMoveDirection;
         this.speed = 350;
         this.board = document.querySelectorAll("#board div");
         this.snake = new Snake();
